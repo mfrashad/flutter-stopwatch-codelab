@@ -1,0 +1,28 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-03-04T06:14:24Z",
+  "id": "flutter-stopwatch",
+  "duration": 40,
+  "title": "Flutter Stopwatch App",
+  "authors": "Muhammad Fathy Rashad",
+  "summary": "In this codelab, you'll build a simple stopwatch app",
+  "source": "1BtQP0Pl3Twaa1D4o7I3OA0BXJOAsS-E5KK7jYSWtAus",
+  "theme": "flutter",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "Flutter"
+  ],
+  "tags": [
+    "flutter",
+    "mobile",
+    "web"
+  ],
+  "feedback": "https://github.com/mfrashad/flutter-movie-codelab",
+  "ga": "UA-128948221-4",
+  "url": "flutter-stopwatch"
+}

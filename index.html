@@ -1,0 +1,1534 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Flutter Stopwatch App</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-128948221-4"
+                  id="flutter-stopwatch"
+                  title="Flutter Stopwatch App"
+                  environment="web"
+                  feedback-link="https://github.com/mfrashad/flutter-movie-codelab">
+    
+      <google-codelab-step label="Introduction" duration="0">
+        <p><strong>Last Updated:</strong> 2020-02-21</p>
+<p><strong>Author: </strong><a href="https://www.mfrashad.com/" target="_blank">Muhammad Fathy Rashad</a></p>
+<p><strong>Credit and References: </strong><a href="https://codelabs.developers.google.com/codelabs/first-flutter-app-pt1/#0" target="_blank">Write your first flutter app</a>, <a href="https://github.com/itzpradip/flutter-movie-app" target="_blank">Flutter Movie App</a></p>
+<h2 is-upgraded><strong>What is Flutter?</strong></h2>
+<p>Flutter is Google&#39;s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.</p>
+<p>In this codelab, you&#39;ll create a simple mobile Flutter app. If you&#39;re familiar with object-oriented code and basic programming concepts—such as variables, loops, and conditionals—then you can complete the codelab. You don&#39;t need previous experience with Dart or mobile programming.</p>
+<h2 is-upgraded><strong>What you&#39;ll build</strong></h2>
+<p>In this codelab, you&#39;re going to build a simple movie app using Flutter and TMDB API. Your app will fetch the data of several movies from TMDB, and show it in a beautiful list on the app.</p>
+<p>The following image shows the resulting app of this codelab:</p>
+<p class="image-container"><img style="width: 213.12px" src="img/8f717651f38ca70a.gif"></p>
+<h2 class="checklist" is-upgraded><strong>What you&#39;ll learn</strong></h2>
+<ul class="checklist">
+<li>How to create a flutter app</li>
+<li>How to display text and icon</li>
+<li>How to use button and add interactivity</li>
+</ul>
+<h2 is-upgraded><strong>What you&#39;ll need</strong></h2>
+<ul>
+<li>Flutter SDK</li>
+<li>Android Studio or your preferred IDE</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Set up your Flutter environment" duration="15">
+        <p>You need two pieces of software—the <a href="https://flutter.io/get-started/install/" target="_blank">Flutter SDK</a> and <a href="https://flutter.io/get-started/editor/" target="_blank">an editor</a>. (The codelab assumes that you&#39;re using Android Studio, but you can use your preferred editor.)</p>
+<p>To install this you can follow the <a href="https://flutter.dev/docs/get-started/install" target="_blank">official installation guide</a> or you can use <a href="https://docs.google.com/document/d/16lCB3lQc_isiVk93uvhgM8fLASBE4E-w52C0FDXR8cQ/edit?usp=sharing" target="_blank">our own guide</a> (Windows only) for simpler setup with images or visual aid.</p>
+<p>You can run the codelab by using any of the following devices:</p>
+<ul>
+<li>A physical <a href="https://flutter.io/setup-macos/#set-up-your-android-device" target="_blank">Android</a> or <a href="https://flutter.io/setup-macos/#deploy-to-ios-devices" target="_blank">iOS</a> device connected to your computer and set to developer mode</li>
+<li>The<a href="https://flutter.io/setup-macos/#set-up-the-ios-simulator" target="_blank"> iOS simulator</a> (requires installing Xcode tools)</li>
+<li>The <a href="https://flutter.io/setup-macos/#set-up-the-android-emulator" target="_blank">Android Emulator</a> (requires setup in Android Studio)</li>
+<li>A browser (Chrome is required for debugging)</li>
+</ul>
+<p>If you want to compile your app to run on the web, you must enable this feature (which is currently in beta). To enable web support, use the following instructions:</p>
+<pre><code>$ flutter channel beta
+$ flutter upgrade
+$ flutter config --enable-web</code></pre>
+<p>You need only run the config command once. After enabling web support, every Flutter app you create also compiles for the web. In your IDE under the devices pulldown, or at the command line using flutter devices, you should now see Chrome and Web server listed. The Chrome device automatically starts Chrome. The Web server starts a server that hosts the app so that you can load it from any browser. Use the Chrome device during development so that you can use DevTools, and the web server when you want to test on other browsers. For more information, see <a href="https://flutter.dev/docs/get-started/web" target="_blank">Building a web application with Flutter</a> and <a href="https://flutter.dev/docs/get-started/codelab-web" target="_blank">Write your first Flutter app on the web</a>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create the starter app" duration="5">
+        <p><img style="width: 24.00px" src="img/b2f84ff91b0e1396.png">Create a simple, templated Flutter app by using the instructions in <a href="https://flutter.dev/docs/get-started/test-drive#androidstudio" target="_blank">Create the app</a>. Enter startup_namer (instead of myapp) as the project name. You&#39;ll modify the starter app to create the finished app.</p>
+<p>Tip: If you don&#39;t see the ability to start a new Flutter project as an option in your IDE, then make sure that you have the <a href="https://flutter.io/get-started/editor/#androidstudio" target="_blank">plugins installed for Flutter and Dart</a>.</p>
+<p>You&#39;ll mostly edit lib/main.dart, where the Dart code lives.</p>
+<p><img style="width: 24.00px" src="img/b2f84ff91b0e1396.png"> Replace the contents of lib/main.dart.</p>
+<p>Delete all of the code from lib/main.dart and replace it with the following code, which displays &#34;Hello World&#34; in the center of the screen.</p>
+<h3 is-upgraded>lib/main.dart</h3>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+
+void main() =&gt; runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Welcome to Flutter&#39;,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(&#39;Welcome to Flutter&#39;),
+        ),
+        body: const Center(
+          child: const Text(&#39;Hello World&#39;),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+<p>Tip: When pasting code into your app, indentation can become skewed. You can fix it with the following Flutter tools:</p>
+<ul>
+<li>Android Studio/IntelliJ IDEA: Right-click the Dart code and select Reformat Code with dartfmt.</li>
+<li>VS Code: Right-click and select Format Document.</li>
+<li>Terminal: Run flutter format &lt;filename&gt;.</li>
+</ul>
+<p><img style="width: 24.00px" src="img/b2f84ff91b0e1396.png"> <a href="https://flutter.io/get-started/test-drive/#androidstudio" target="_blank">Run the app</a>. You should see either Android or iOS output, depending on your device.</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 488.00px" src="img/f9df7832965ede9f.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 350.00px" src="img/a65ddf4649d963e9.png"></p>
+</td></tr>
+</table>
+<p>Tip: The first time that you run on a physical device, it can take a while to load. Afterward, you can use hot reload for quick updates. In supported IDEs, Save also performs a hot reload if the app is running. When running an app directly from the console using flutter run, enter r to perform hot reload.</p>
+<p><img style="width: 27.00px" src="img/cf1e10b838bf60ee.png"> Observations</p>
+<ul>
+<li>This example creates a Material app. <a href="https://material.io/guidelines/" target="_blank">Material</a> is a visual-design language that&#39;s standard on mobile and the web. Flutter offers a rich set of Material widgets.</li>
+<li>The main method uses arrow (=&gt;) notation. Use arrow notation for one-line functions or methods.</li>
+<li>The app extends StatelessWidget, which makes the app itself a widget. In Flutter, almost everything is a widget, including alignment, padding, and layout.</li>
+<li>The Scaffold widget, from the Material library, provides a default app bar, a title, and a body property that holds the widget tree for the home screen. The widget subtree can be quite complex.</li>
+<li>A widget&#39;s main job is to provide a build method that describes how to display the widget in terms of other, lower-level widgets.</li>
+<li>The body for this example consists of a Center widget containing a Text child widget. The Center widget aligns its widget subtree to the center of the screen.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add and style text" duration="5">
+        <p>In this section we will plan the app layout and add the `Stopwatch` title and style the text to look like we want.</p>
+<h2 is-upgraded><strong>Plan the app layout</strong></h2>
+<p>Before we start coding anything, we should plan how we want to layout the screen to achieve our target look.</p>
+<p>From this image, you can infer what the widget tree looks like.</p>
+<p class="image-container"><img style="width: 386.50px" src="img/9f3a3d7b11bab986.png"><img style="width: 186.35px" src="img/d457e00f760bbe60.png"></p>
+<h2 is-upgraded><strong>Add header text</strong></h2>
+<p>Replace the Scaffold body with a Column. Column widget has a children property where you can give a list of Widgets to it. Then, put a Text widget as our header inside the Column children.</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#34;STOPWATCH&#34;,       //Change title to Stopwatch
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(&#34;STOPWATCH&#34;),   //Change title to ‘Movies&#39;
+        ),
+        body: Column(            //Add from this line
+          children: &lt;Widget&gt;[
+            Text(&#34;STOPWATCH&#34;)
+          ],
+        )                       //Until this line
+      ),
+    );
+  }
+}</code></pre>
+<p>After you change this you will see the text shows on the screen. However it looks nothing like our desired look, which is why you will stylize it.</p>
+<p class="image-container"><img style="width: 185.73px" src="img/40c8e64d0e3d5688.png"></p>
+<h2 is-upgraded><strong>Stylize text</strong></h2>
+<p>The Text widget has a style property, which expects a TextStyle widget. In TextStyle widget you can set the font size, weight, style and many others properties.</p>
+<aside class="special"><p><strong>💡Tip</strong>: In Android Studio, you can place your text cursor on a widget and press Ctrl+Q to view the available widget parameters</p>
+</aside>
+<p>We will increase the font size and bold it.</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Welcome to Flutter&#39;,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(&#39;Welcome to Flutter&#39;),
+        ),
+        body: Column(
+          children: &lt;Widget&gt;[
+            Text(&#34;STOPWATCH&#34;,                 // Edit from this line
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade900,
+                )                           // To this line
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>The result should be like this.</p>
+<p class="image-container"><img style="width: 209.97px" src="img/e2db47246041dade.png"></p>
+<h2 is-upgraded><strong>Add padding</strong></h2>
+<p> It looks better now, but you will notice the text is too close to the edge and we want it to have some space. The solution for this is Padding. You can wrap the Text in a Padding or Container widget. Both have a padding property where it expects EdgeInsets widget. Additionally, you want the text to be in the center, you can do this by setting the horizontal padding accordingly.</p>
+<p>There are three types of padding that you will usually use:</p>
+<ul>
+<li>EdgeInsets.all(value)<br>This sets the same padding for all side based on the value given</li>
+<li>EdgeInsets.symmetric(horizontal: value, vertical: value)<br>This sets the same padding for left and right based on horizontal value, and top and bottom padding the same based on the vertical value.</li>
+<li>EdgeInsets.fromLTRB(leftvalue, topvalue, rightvalue, bottomvalue)<br>Set a specific padding for each side based on the value given.</li>
+</ul>
+<p>We will be using symmetric padding for the above purpose. Also, we will remove the App Bar as we do not want it to show in our final app.</p>
+<ul>
+<li>&gt; Wrap the text in Padding Widget</li>
+<li>&gt; Remove App Bar</li>
+</ul>
+<aside class="special"><p>Tip: In Android Studio, you can place your text cursor on a Widget, then you can click on a light bulb icon that will appear and select &#34;Wrap with Padding&#34; for shortcut.</p>
+</aside>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+//        appBar: AppBar(         // remove these lines
+//          title: const Text(&#39;STOPWATCH&#39;),
+//        ),
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>The results should be like this:</p>
+<p class="image-container"><img style="width: 205.32px" src="img/9bca90cfc48318e6.png"></p>
+<p>Congratulations! Finally, the header looks like what we want. Now we can move to the next step.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add Stopwatch Counter UI" duration="15">
+        <p>In this section, we will create the UI of the stopwatch counter at the center of our appliction.</p>
+<h2 is-upgraded><strong>Add Container Widget</strong></h2>
+<p>Flutter has a Container widget where we group widgets together and can customize the shape, color, shadow, etc of it. Usually we also use the Container to set the width and height of our UI as not all widget have the height and width property.</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(            // Add this line
+              width: 280,
+              height: 280,
+              color: Colors.grey,
+            )                      // until here
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>The results should be like this:</p>
+<p class="image-container"><img style="width: 227.36px" src="img/28b6f7fd65f0410d.png"></p>
+<p>However, we can see that the result is far from our desired look. It is not shaped like a circle and does not have a nice shadow.</p>
+<h2 is-upgraded><strong>Stylize Container with BoxDecoration</strong></h2>
+<p>The Container widget can receive a `decoration` property where you can further stylize/customize the container. The `decoration` property expects a BoxDecoration widget.</p>
+<p><strong>Warning:</strong> You cannot use the `color` property alongside the `decoration` property, specify the color inside the BoxDecoration widget instead.</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+//              color: Colors.grey.
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p><strong>Observation</strong></p>
+<ul>
+<li>BoxDecoration has the `color` property, where you specify the background color</li>
+<li>BoxDecoration has the `shape` property, where you can specify the shape whether rectangle or circle using BoxShape widget.</li>
+<li>BoxDecoration has the `boxShadow` property, where you customize the shadows of the container. It expects an array of BoxShadow widget.</li>
+<li>We set 2 shadows on the container, one is a light/white shadow at the top left, and another is a dark shadow at bottom right. The shadows are necessary to achieve the neomorphism design that we want.</li>
+</ul>
+<p>The resulting screen should be like this:</p>
+<p class="image-container"><img style="width: 243.94px" src="img/259a331854ad864f.png"></p>
+<h2 is-upgraded><strong>Set Background Color</strong></h2>
+<p>From the previous result, you may notice that the grey color on the counter may not match the white color on the background. Now, we will change the background color to grey as well. The Scaffold widget has `backgroundColor` property where you can specify the background color.</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,     // Add this line
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>Result:</p>
+<p class="image-container"><img style="width: 191.06px" src="img/47e9aa9d28a14ac8.png"></p>
+<p>Although it may look the same, we have changed the background color from white to slightly grey and now you may notice the light shadow at the top left.</p>
+<h2 is-upgraded>Add Counter Icon</h2>
+<p>Next, we will add the counter icon inside the circle container. Flutter already has an Icon widget that we can use where you can also customize the size and color of the icon. Make sure you add the Icon inside a column, as we will be adding the counter text next.</p>
+<p>&gt; Add Column widget as the circle Container child</p>
+<p>&gt; Add Icon widget inside the added Column widget</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(             // Add from this line
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900)
+                ],
+              ),              // To this line
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p><strong>Observation:</strong></p>
+<ul>
+<li>The first parameter of Icon widget, is the type of icon that we want to use. Use the Icons class to for the icon type. And notice that it doesn&#39;t require the key of the parameter like `size:` or `color:` does, hence the order of the parameter matter and the type of the Icon need to be the first parameter.</li>
+<li>The `size` and `color` property is a keyword parameter, hence the order doesn&#39;t matter.</li>
+</ul>
+<p>Result:</p>
+<p class="image-container"><img style="width: 177.86px" src="img/b8c4b010051e04ab.png"></p>
+<p>Now we have an Icon displayed on our app.</p>
+<h2 is-upgraded>Add Counter Text</h2>
+<p>Next, we will add the text that shows the counter of the stopwatch.</p>
+<p>&gt; Add Text widget below the Icon before</p>
+<p>&gt; Stylize the Text</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                  Text(&#34;00:00:00&#34;,      // Add from this line
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.grey.shade900
+                    )
+                  )                    // To this line
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>Result: </p>
+<p class="image-container"><img style="width: 182.69px" src="img/7bbf45319d18ea0b.png"></p>
+<p>However, you can see that our stopwatch icon and text are aligned to the top, which is not what we want. We want it to be centered instead. Next, we will align column.</p>
+<h2 is-upgraded><strong>Aligning Column</strong></h2>
+<p>Column and Row widget has `mainAxisAlignment` property and `crossAxisAlignment` to specify the alignment. As we are using Column, the `mainAxisAlignment` will control the vertical alignment of our column.</p>
+<aside class="special"><p><strong>Info: </strong>You can read more on <a href="https://flutter.dev/docs/codelabs/layout-basics" target="_blank">basic flutter layout on the documentation</a> to understand more regarding the alignment.</p>
+</aside>
+<p>&gt; Set the mainAxisAlignment to center</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,             // Add this line
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                  Text(&#34;00:00:00&#34;,
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.grey.shade900
+                    )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p>Result:</p>
+<p class="image-container"><img style="width: 200.50px" src="img/61baf8ed0da8b6ce.png"></p>
+<p>Now, we have finished the UI for our stopwatch counter. Next, we will be doing the buttons of the stopwatch.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add Buttons" duration="0">
+        <p>Flutter has many build-in widget for buttons such as FlatButton, RaisedButton, etc. Most of these widgets have the `onPressed` property where you can specify the function that will be run when the button is pressed. For this tutorial, we will be using FlatButton.</p>
+<p>&gt; Add a new Row below the counter container before</p>
+<p>&gt; Add a FlatButton inside the added Row</p>
+<p>&gt; Add Container as the child of the FlatButton to specify the height and width</p>
+<p>&gt; Use Icon as the child of the added Container</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                  Text(&#34;00:00:00&#34;,
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.grey.shade900
+                    )
+                  )
+                ],
+              ),
+            ),
+            Row(                        // Add from this line
+              children: &lt;Widget&gt;[
+                FlatButton(
+                  onPressed: (){},
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.white,
+                    child: Icon(Icons.refresh, size: 60),
+                  )
+                )
+              ],
+            )                        // To this line
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p class="image-container"><img style="width: 195.50px" src="img/47cbc15e2136a563.png"></p>
+<p>Now we have a clickable button, however, it looks ugly and not the UI that we want. To give the same circle shape, and shadow like the Counter circle container. Copy paste the `decoration` property.</p>
+<h2 is-upgraded><strong>Stylize the Button</strong></h2>
+<p>&gt; Copy paste the `decoration` property from the previous Container of the Counter to our Button Container</p>
+<p>&gt; Remove the `color` property from the Container, to avoid conflict</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                  Text(&#34;00:00:00&#34;,
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.grey.shade900
+                    )
+                  )
+                ],
+              ),
+            ),
+            Row(
+              children: &lt;Widget&gt;[
+                FlatButton(
+                  onPressed: (){},
+                  child: Container(
+                    height: 100,
+                    width: 100,
+//                    color: Colors.white,      // Remove this line
+                    decoration: BoxDecoration(    // Add from this line
+                        color: Colors.grey.shade200,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(10, 10),
+                              color: Colors.black38,
+                              blurRadius: 15),
+                          BoxShadow(
+                              offset: Offset(-10, -10),
+                              color: Colors.white.withOpacity(0.85),
+                              blurRadius: 15)
+                        ]),                // To this line
+                    child: Icon(Icons.refresh, size: 60),
+                  )
+                )
+              ],
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p class="image-container"><img style="width: 189.95px" src="img/481710da7426def5.png"></p>
+<h2 is-upgraded><strong>Add the Play Button</strong></h2>
+<p>&gt; Repeat the previous Button, but change the icon</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>// ... Previous code
+            Row(
+              children: &lt;Widget&gt;[
+                FlatButton(
+                  onPressed: (){},
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(10, 10),
+                              color: Colors.black38,
+                              blurRadius: 15),
+                          BoxShadow(
+                              offset: Offset(-10, -10),
+                              color: Colors.white.withOpacity(0.85),
+                              blurRadius: 15)
+                        ]),
+                    child: Icon(Icons.refresh, size: 60),
+                  )
+                ),
+                FlatButton(          // Add from this
+                    onPressed: (){},
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(10, 10),
+                                color: Colors.black38,
+                                blurRadius: 15),
+                            BoxShadow(
+                                offset: Offset(-10, -10),
+                                color: Colors.white.withOpacity(0.85),
+                                blurRadius: 15)
+                          ]),
+                      child: Icon(Icons.play_arrow, size: 60),
+                    )
+                )               // To this line
+              ],
+            )
+
+// .. The rest of the code</code></pre>
+<p class="image-container"><img style="width: 232.97px" src="img/104e96caf7febd3e.png"></p>
+<h2 is-upgraded><strong>Align and Pad the Button</strong></h2>
+<p>&gt; Align the buttons to be centered and evenly spaced</p>
+<p>&gt; Add Padding to the row to add some space between the Buttons and the Counter</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Colors.black38,
+                        blurRadius: 15),
+                    BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Colors.white.withOpacity(0.85),
+                        blurRadius: 15)
+                  ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: &lt;Widget&gt;[
+                  Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                  Text(&#34;00:00:00&#34;,
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.grey.shade900
+                    )
+                  )
+                ],
+              ),
+            ),
+            Padding(         // Wrap the Row with Padding
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,           // Add this line
+                children: &lt;Widget&gt;[
+                  FlatButton(
+                    onPressed: (){},
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(10, 10),
+                                color: Colors.black38,
+                                blurRadius: 15),
+                            BoxShadow(
+                                offset: Offset(-10, -10),
+                                color: Colors.white.withOpacity(0.85),
+                                blurRadius: 15)
+                          ]),
+                      child: Icon(Icons.refresh, size: 60),
+                    )
+                  ),
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.play_arrow, size: 60),
+                      )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p class="image-container"><img style="width: 213.45px" src="img/f0f13e74af07d7a9.png"></p>
+<h2 is-upgraded><strong>Expanded Widget</strong></h2>
+<p>Beside Container, Flutter also has widget called Expanded. The unique thing about expanded is that instead of specifying the height and width of it, it will take as much space available. We will wrap the Counter container inside Expanded widget to force the Buttons row to the button. Previously, we did this by setting a high vertical padding for the Buttons row, but the result of this may vary depending on the device height. Hence, why we should use the Expanded widget.</p>
+<p>&gt; Wrap the Counter Container with Expanded widget</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>                        class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Expanded(                    // Wrap the Container with Expanded widget
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(10, 10),
+                          color: Colors.black38,
+                          blurRadius: 15),
+                      BoxShadow(
+                          offset: Offset(-10, -10),
+                          color: Colors.white.withOpacity(0.85),
+                          blurRadius: 15)
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: &lt;Widget&gt;[
+                    Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                    Text(&#34;00:00:00&#34;,
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: Colors.grey.shade900
+                      )
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: &lt;Widget&gt;[
+                  FlatButton(
+                    onPressed: (){},
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(10, 10),
+                                color: Colors.black38,
+                                blurRadius: 15),
+                            BoxShadow(
+                                offset: Offset(-10, -10),
+                                color: Colors.white.withOpacity(0.85),
+                                blurRadius: 15)
+                          ]),
+                      child: Icon(Icons.refresh, size: 60),
+                    )
+                  ),
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.play_arrow, size: 60),
+                      )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+      ),
+    );
+  }
+}</code></pre>
+<p class="image-container"><img style="width: 191.78px" src="img/7a13b551ba97a8ea.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add Stopwatch Logic" duration="0">
+        <h2 is-upgraded><strong>Stateful Widget</strong></h2>
+<p>Flutter widgets can be categorized into 2 types: stateless widget and stateful widget. Stateless widget is used when all the data is constant. Stateful widget is a widget where the data is dynamic or may change. For example, for our stopwatch app, the time counter inside will change over time as we press the play button, hence it need to be stateful widget.</p>
+<h2 is-upgraded><strong>Creating Stateful Widget</strong></h2>
+<p>In Android Studio, you can type `stful` and press enter. It will generate a template code for a stateful widget. There will be 2 classes generated, we will be mainly editing the one that started with underscore `_`.</p>
+<p>&gt; Create a new stateful widget called `StopwatchApp`</p>
+<p>It will generate the following code:</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>class StopwatchApp extends StatefulWidget {
+  @override
+  _StopwatchAppState createState() =&gt; _StopwatchAppState();
+}
+
+class _StopwatchAppState extends State&lt;StopwatchApp&gt; {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}</code></pre>
+<h2 is-upgraded><strong>Move App to Stateful Widget</strong></h2>
+<p>&gt; Move Scaffold widget and everything inside it into the newly created StopwatchApp widget</p>
+<p>&gt; Replace the `home` property value with the StopwatchApp widget instead of Scaffold</p>
+<p>The final code you have should like the following:</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+
+void main() =&gt; runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: StopwatchApp()           // Edited
+    );
+  }
+}
+
+class StopwatchApp extends StatefulWidget {
+  @override
+  _StopwatchAppState createState() =&gt; _StopwatchAppState();
+}
+
+class _StopwatchAppState extends State&lt;StopwatchApp&gt; {
+  @override
+  Widget build(BuildContext context) {                  
+    return Scaffold(                                    // Edited
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(10, 10),
+                          color: Colors.black38,
+                          blurRadius: 15),
+                      BoxShadow(
+                          offset: Offset(-10, -10),
+                          color: Colors.white.withOpacity(0.85),
+                          blurRadius: 15)
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: &lt;Widget&gt;[
+                    Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                    Text(&#34;00:00:00&#34;,
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Colors.grey.shade900
+                        )
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: &lt;Widget&gt;[
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.refresh, size: 60),
+                      )
+                  ),
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.play_arrow, size: 60),
+                      )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+    );
+  }
+}</code></pre>
+<p>Now your app should still look the same as the previous image.</p>
+<h2 is-upgraded><strong>Timer class</strong></h2>
+<p>Flutter has a Timer class that has a `periodic` function. The function allows us to call a given function every certain period. Therefore, we will use the Timer.periodic function to call an `update` function for every 1 millisecond. The `update` function will increase the counter by 1 and update the text displayed on the app.</p>
+<p>Timer Class Functions:</p>
+<ul>
+<li>Timer.periodic(Duration n, function f)<br>Will run function f every duration n</li>
+<li>Timer t.cancel()<br>Stop the timer (Stop calling function f)</li>
+</ul>
+<h2 is-upgraded><strong>Stopwatch Class</strong></h2>
+<p>Flutter also has a built-in Stopwatch class that emulates how stopwatch works. There are 3 functions that we can use:</p>
+<p>(s is an instance of Stopwatch class)</p>
+<ul>
+<li>Stopwatch s.start()<br>Start stopwatch</li>
+<li>Stopwatch s.stop()<br>Pause the stopwatch</li>
+<li>Stopwatch s.reset()<br>Reset the stopwatch counter</li>
+</ul>
+<p>And using Stopwatch class, we can also check the value of the counter/timer after it starts running and also other properties:</p>
+<ul>
+<li>Stopwatch s.elapsed.inSeconds<br>Value of the counter in seconds</li>
+<li>Stopwatch s.elapsed.inMilliseconds<br>Value of the counter in millliseconds</li>
+<li>Stopwatch s.isRunning<br>Return a boolean whether the stopwatch is running or paused</li>
+</ul>
+<h2 is-upgraded><strong>Add Stopwatch Functions</strong></h2>
+<p>&gt; Import `dart:async` package</p>
+<p>&gt; Create timeString variable, the text that will be displayed as the counter</p>
+<p><strong>&gt; </strong>Create start() function, that will start the stopwatch</p>
+<p>&gt; Create update() function, that will increment the counter and update the timeString text every 1 ms</p>
+<p>&gt; Create reset() function, that will reset the counter</p>
+<p><code>lib/main.dart</code></p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;dart:async&#39;;                  // Add this line
+
+void main() =&gt; runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: StopwatchApp()
+    );
+  }
+}
+
+class StopwatchApp extends StatefulWidget {
+  @override
+  _StopwatchAppState createState() =&gt; _StopwatchAppState();
+}
+
+class _StopwatchAppState extends State&lt;StopwatchApp&gt; {
+
+  String timeString = &#34;00:00:00&#34;;          // add from this line
+  Stopwatch stopwatch = Stopwatch();
+  Timer timer;
+
+  void start(){
+    stopwatch.start();
+    timer = Timer.periodic(Duration(milliseconds: 1), update);
+  }
+
+  void update(Timer t){
+    if(stopwatch.isRunning){
+      setState(() {
+        timeString =
+            (stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, &#34;0&#34;) + &#34;:&#34; +
+                (stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, &#34;0&#34;) + &#34;:&#34; +
+                (stopwatch.elapsed.inMilliseconds % 1000 / 10).clamp(0, 99).toStringAsFixed(0).padLeft(2, &#34;0&#34;);
+      });
+
+    }
+  }
+
+  void stop(){
+    setState(() {
+      timer.cancel();
+      stopwatch.stop();
+    });
+
+  }
+
+  void reset(){
+    timer.cancel();
+    stopwatch.reset();
+    setState((){
+      timeString = &#34;00:00:00&#34;;
+
+    });
+    stopwatch.stop();
+  }                                // to this line
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(10, 10),
+                          color: Colors.black38,
+                          blurRadius: 15),
+                      BoxShadow(
+                          offset: Offset(-10, -10),
+                          color: Colors.white.withOpacity(0.85),
+                          blurRadius: 15)
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: &lt;Widget&gt;[
+                    Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                    Text(&#34;00:00:00&#34;,
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Colors.grey.shade900
+                        )
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: &lt;Widget&gt;[
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.refresh, size: 60),
+                      )
+                  ),
+                  FlatButton(
+                      onPressed: (){},
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.play_arrow, size: 60),
+                      )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+    );
+  }
+}
+</code></pre>
+<p><code>lib/main.dart</code></p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;dart:async&#39;;
+
+void main() =&gt; runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;STOPWATCH&#39;,
+      home: StopwatchApp()
+    );
+  }
+}
+
+class StopwatchApp extends StatefulWidget {
+  @override
+  _StopwatchAppState createState() =&gt; _StopwatchAppState();
+}
+
+class _StopwatchAppState extends State&lt;StopwatchApp&gt; {
+
+  String timeString = &#34;00:00:00&#34;;
+  Stopwatch stopwatch = Stopwatch();
+  Timer timer;
+
+  void start(){
+    stopwatch.start();
+    timer = Timer.periodic(Duration(milliseconds: 1), update);
+  }
+
+  void update(Timer t){
+    if(stopwatch.isRunning){
+      setState(() {
+        timeString =
+            (stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, &#34;0&#34;) + &#34;:&#34; +
+                (stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, &#34;0&#34;) + &#34;:&#34; +
+                (stopwatch.elapsed.inMilliseconds % 1000 / 10).clamp(0, 99).toStringAsFixed(0).padLeft(2, &#34;0&#34;);
+      });
+
+    }
+  }
+
+  void stop(){
+    setState(() {
+      timer.cancel();
+      stopwatch.stop();
+    });
+
+  }
+
+  void reset(){
+    timer.cancel();
+    stopwatch.reset();
+    setState((){
+      timeString = &#34;00:00:00&#34;;
+
+    });
+    stopwatch.stop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Column(
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
+              child: Text(&#34;STOPWATCH&#34;,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade900,
+                  )
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(10, 10),
+                          color: Colors.black38,
+                          blurRadius: 15),
+                      BoxShadow(
+                          offset: Offset(-10, -10),
+                          color: Colors.white.withOpacity(0.85),
+                          blurRadius: 15)
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: &lt;Widget&gt;[
+                    Icon(Icons.timer, size: 90, color: Colors.grey.shade900),
+                    Text(&#34;00:00:00&#34;,
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Colors.grey.shade900
+                        )
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: &lt;Widget&gt;[
+                  FlatButton(
+                      onPressed: reset,
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(Icons.refresh, size: 60),
+                      )
+                  ),
+                  FlatButton(
+                      onPressed: (){
+                        stopwatch.isRunning ? stop() : start();
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(10, 10),
+                                  color: Colors.black38,
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  offset: Offset(-10, -10),
+                                  color: Colors.white.withOpacity(0.85),
+                                  blurRadius: 15)
+                            ]),
+                        child: Icon(stopwatch.isRunning ? Icons.pause : Icons.play_arrow, size: 60),
+                      )
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+    );
+  }
+}</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Congratulations" duration="0">
+        <p>Congratulations, you have successfully built a Movie App with Flutter! </p>
+<p class="image-container"><img style="width: 328.77px" src="img/813333726db98cc1.gif"></p>
+<p>Feel free to give a star to this <a href="https://github.com/mfrashad/flutter-movie-codelab" target="_blank">workshop </a>if you liked the tutorial.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
